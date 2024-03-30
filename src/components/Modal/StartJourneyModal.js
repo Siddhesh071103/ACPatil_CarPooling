@@ -9,16 +9,10 @@ import { Dropdown } from 'react-native-element-dropdown';
 export default function AddTaskModal({ modalVisible, setModalVisible }) {
     const [tripFrom, setTripFrom] = useState('')
     const [tripTo, setTripTo] = useState('')
-    const [tripCost, setTripCost] = useState('')
+    const [tripDesc, setTripDesc] = useState('')
     const [VehicleNumber, setVehicleNumber] = useState('')
     const [vehicleCapacity, setVehicleCapacity] = useState('')
     const [typeOfVehicle, setTypeOfVehicle] = useState('')
-    const [time, setTime] = useState('')
-    const [date, setdate] = useState({
-        year: '',
-        date: '',
-        month: '',
-    })
 
     const [dateData, setdateData] = useState(new Date())
     const [show, setshow] = useState(false)
@@ -50,15 +44,9 @@ export default function AddTaskModal({ modalVisible, setModalVisible }) {
     }
 
 
-    function getDate(params) {
-        return `${date.year}-${date.month}-${date.date}`
-    }
-
-
     function hancleSubmit() {
         // BlogServices.PostTask(task,Slider[1])
-        const dat = getDate()
-        journeyServices.bookRide(tripFrom, tripTo, tripCost, typeOfVehicle, parseInt(vehicleCapacity), VehicleNumber, dat, time)
+        journeyServices.bookRide(tripFrom, tripTo, typeOfVehicle, parseInt(vehicleCapacity), VehicleNumber, text, timeText)
         setModalVisible(!modalVisible)
     }
 
@@ -139,13 +127,13 @@ export default function AddTaskModal({ modalVisible, setModalVisible }) {
                         </View>
                     </View>
                     <View style={{ marginTop: 20 }}>
-                        <Text style={[styles.smallText, { color: 'black', marginBottom: 5 }]}>Travel Cost</Text>
-                        <View style={styles.textInput}>
+                        <Text style={[styles.smallText, { color: 'black', marginBottom: 5 }]}>Ride Description</Text>
+                        <View style={[styles.textInput, { height: 100 }]}>
                             <TextInput
-                                placeholder='₹ 53'
-                                onChangeText={(text) => setTripCost(text)}
-                                value={tripCost}
-                                keyboardType='number-pad'
+                                placeholder='The Ride ...'
+                                onChangeText={(text) => setTripDesc(text)}
+                                value={tripDesc}
+                                numberOfLines={3}
                             />
                         </View>
                     </View>
@@ -191,12 +179,12 @@ export default function AddTaskModal({ modalVisible, setModalVisible }) {
                         </TouchableOpacity>
                     </View>
                     <View style={{ marginTop: 20 }}>
-                        <Text style={[styles.smallText, { color: 'black', marginBottom: 5 }]}>Date</Text>
+                        <Text style={[styles.smallText, { color: 'black', marginBottom: 5 }]}>Journey Time</Text>
                         <TouchableOpacity
                             onPress={() => { setshowTime(true) }}
                             style={{ borderRadius: 10, borderWidth: 1, height: 50, borderColor: colorTheme.borderColor, justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row' }}>
-                            <Text style={{ marginLeft: 5 }}>{text === '' ? 'Enter Date' : text}</Text>
-                            <MaterialIcons name="date-range" color={colorTheme.primaryColor} size={25} style={{ marginRight: 10 }} />
+                            <Text style={{ marginLeft: 5 }}>{text === '' ? 'Enter Time' : text}</Text>
+                            <MaterialIcons name="watch-later" color={colorTheme.primaryColor} size={25} style={{ marginRight: 10 }} />
                         </TouchableOpacity>
                     </View>
                     {/* <Text onPress={convertAddresstocorr('Sakinaka')}>click here</Text> */}

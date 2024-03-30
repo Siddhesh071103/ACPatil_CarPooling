@@ -1,7 +1,7 @@
 import axios from "axios"
 import { API_URL, COMMON_USER } from "../constant";
 
-function FetchLatLong( address ) {
+function FetchLatLong(address) {
     console.log(address);
     return new Promise((resolve, reject) => {
         axios.get(
@@ -17,8 +17,8 @@ function FetchLatLong( address ) {
     })
 }
 
-async function bookRide(tripfrom, tripto, travelcost, vehicletype, vehiclecapacity, vehiclenumber, date, time) {
-    // console.log(typeof priority);
+async function bookRide(tripfrom, tripto, vehicletype, vehiclecapacity, vehiclenumber, date, time) {
+    console.log(date, time);
     const token = COMMON_USER
     // const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjVjZmM2MDMwNjZlMjIwNjZlN2ZjOGRlIn0sImlhdCI6MTcwODExNjM0NX0.DnzbQIqxXVVhzZU741LFUXD33UpEBxAt6lbgAPRHCwM'
     const config = {
@@ -31,7 +31,6 @@ async function bookRide(tripfrom, tripto, travelcost, vehicletype, vehiclecapaci
     const body = {
         tripfrom: tripfrom,
         tripto: tripto,
-        travelcost: travelcost,
         vehicletype: vehicletype,
         vehiclecapacity: vehiclecapacity,
         seatavailable: vehiclecapacity,
@@ -56,7 +55,7 @@ async function bookRide(tripfrom, tripto, travelcost, vehicletype, vehiclecapaci
     })
 }
 
-async function getAllRide( tripfrom, tripto ) {
+async function getAllRide(tripfrom, tripto) {
     // console.log(typeof priority);
     const token = COMMON_USER
     // const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjVjZmM2MDMwNjZlMjIwNjZlN2ZjOGRlIn0sImlhdCI6MTcwODExNjM0NX0.DnzbQIqxXVVhzZU741LFUXD33UpEBxAt6lbgAPRHCwM'
@@ -87,7 +86,7 @@ async function getAllRide( tripfrom, tripto ) {
     })
 }
 
-function FetchRtoDetails(carno ) {
+function FetchRtoDetails(carno) {
     return new Promise((resolve, reject) => {
         axios.get(
             `https://www.carinfo.app/_next/data/TdGfV1tvLtidtsVDPbtWw/rc-details/MH02DR4101.json?rc=${carno}`
@@ -103,4 +102,4 @@ function FetchRtoDetails(carno ) {
     })
 }
 
-export const journeyServices = { FetchLatLong, bookRide,getAllRide,FetchRtoDetails }
+export const journeyServices = { FetchLatLong, bookRide, getAllRide, FetchRtoDetails }
