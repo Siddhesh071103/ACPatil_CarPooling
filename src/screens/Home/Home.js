@@ -2,6 +2,7 @@ import { Image, ScrollView, StyleSheet, Text, TextInput, View, TouchableOpacity,
 import React, { useEffect, useState } from 'react'
 import { API_URL, colorTheme } from '../../constant'
 import ArticleCard from '../../components/ArticleCard'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -277,7 +278,7 @@ export default function Home({ navigation }) {
             onError={(error) => console.error('WebView error:', error)}
           />
         </View> */}
-        <View style={{backgroundColor:'#fff',height:150,width:'85%',borderRadius:20,elevation:10,padding:10}}>
+        <View style={{backgroundColor:'#fff',height:150,width:'90%',borderRadius:10,elevation:10,padding:10,marginBottom:20}}>
           <Text style={{fontWeight:'600',color:'black',paddingBottom:12,fontSize:16}}>Transfer Money</Text>
           <View style={{flexDirection:'row',justifyContent:'space-around',display:'flex',flex:1}}>
             <View style={{flex:1,borderRadius:10}}>
@@ -298,11 +299,17 @@ export default function Home({ navigation }) {
               <Text style={{textAlign:'center',fontSize:12}}>Start Journey</Text>
             </View>
             <View style={{flex:1,borderRadius:10}}>
-            <TouchableOpacity style={{borderColor:'#d3d2d6',borderWidth:1,height:50,width:50,alignSelf:'center',margin:10,borderRadius:10,justifyContent:'center',alignItems:'center'}}>
+            <TouchableOpacity style={{borderColor:'#d3d2d6',borderWidth:1,height:50,width:50,alignSelf:'center',margin:10,borderRadius:10,justifyContent:'center',alignItems:'center'}}
+            onPress={()=>navigation.navigate('Location')}
+            >
+              <MaterialCommunityIcons name="google-maps" size={40} color="#407EC2"/>
               </TouchableOpacity>
+              <Text style={{textAlign:'center',fontSize:12}}>Maps</Text>
             </View>
             <View style={{flex:1,borderRadius:10}}>
-            <TouchableOpacity style={{borderColor:'#d3d2d6',borderWidth:1,height:50,width:50,alignSelf:'center',margin:10,borderRadius:10,justifyContent:'center',alignItems:'center'}}>
+            <TouchableOpacity style={{borderColor:'#d3d2d6',borderWidth:1,height:50,width:50,alignSelf:'center',margin:10,borderRadius:10,justifyContent:'center',alignItems:'center'}}
+                 onPress={()=>navigation.navigate('Appointment')}
+            >
               <MaterialIcons name="history" size={40} color="#407CE2"/>
               </TouchableOpacity>
               <Text style={{textAlign:'center',fontSize:12}}>History</Text>
@@ -311,7 +318,7 @@ export default function Home({ navigation }) {
         </View>
 
         {/* registere destination start here  */}
-        <View style={{ width: '90%', marginVertical: 20 }}>
+        {/* <View style={{ width: '90%', marginVertical: 20 }}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <TouchableOpacity
               onPress={() => setJoinRideModal(true)}
@@ -324,15 +331,15 @@ export default function Home({ navigation }) {
               <Text numberOfLines={2} style={[styles.blueText, { color: "white", paddingHorizontal: 30, paddingVertical: 10 }]}>Start Journey</Text>
             </TouchableOpacity>
           </View>
-        </View>
+        </View> */}
         {/* end here  */}
 
-        <View style={{ width: '90%', flexDirection: "row", justifyContent: 'space-between' }}>
+        {/* <View style={{ width: '90%', flexDirection: "row", justifyContent: 'space-between' }}>
           <Text style={[styles.grayText, { marginBottom: 8,color:'black' }]}>Frequently Travelled Routes</Text>
           <Text
             onPress={() => { setTopDoctorModal(true) }}
             style={[{ color: colorTheme.primaryColor, fontSize: 15 }]}>See All Rides</Text>
-        </View>
+        </View> */}
         <Carousel data={data} autoPlay>
           <CarCard isNavigate />
         </Carousel>
