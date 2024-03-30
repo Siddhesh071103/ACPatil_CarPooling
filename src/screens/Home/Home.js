@@ -308,7 +308,7 @@ export default function Home({ navigation }) {
             </View>
             <View style={{flex:1,borderRadius:10}}>
             <TouchableOpacity style={{borderColor:'#d3d2d6',borderWidth:1,height:50,width:50,alignSelf:'center',margin:10,borderRadius:10,justifyContent:'center',alignItems:'center'}}
-                 onPress={()=>navigation.navigate('Appointment')}
+                //  onPress={()=>navigation.navigate('Appointment')}
             >
               <MaterialIcons name="history" size={40} color="#407CE2"/>
               </TouchableOpacity>
