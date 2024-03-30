@@ -2,6 +2,7 @@ import { Image, ScrollView, StyleSheet, Text, TextInput, View, TouchableOpacity,
 import React, { useEffect, useState } from 'react'
 import { API_URL, colorTheme } from '../../constant'
 import ArticleCard from '../../components/ArticleCard'
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -306,7 +307,9 @@ export default function Home({ navigation }) {
             </View>
             <View style={{flex:1,borderRadius:10}}>
             <TouchableOpacity style={{borderColor:'#d3d2d6',borderWidth:1,height:50,width:50,alignSelf:'center',margin:10,borderRadius:10,justifyContent:'center',alignItems:'center'}}>
+              <MaterialCommunityIcons name="google-maps" size={40} color="#407CE2"/>
               </TouchableOpacity>
+              <Text style={{textAlign:'center',fontSize:12}}>Maps</Text>
             </View>
             <View style={{flex:1,borderRadius:10}}>
             <TouchableOpacity style={{borderColor:'#d3d2d6',borderWidth:1,height:50,width:50,alignSelf:'center',margin:10,borderRadius:10,justifyContent:'center',alignItems:'center'}}>
