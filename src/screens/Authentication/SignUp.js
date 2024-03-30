@@ -6,19 +6,40 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { useDispatch, useSelector } from 'react-redux'
 import { userServices } from '../../services/userAuth'
 import { Signup } from '../../store/actions/auth'
+import { sendSmsData } from '../../components/SendSMS'
 
 export default function Template({ navigation }) {
     const [email, setemail] = useState('')
     const [username, setUsename] = useState('')
     const [password, setPassword] = useState('')
-    const [confirmPassword, setConfirmPassword] = useState('')
+    const [phone, setPhone] = useState('')
+    const [gender, setGender] = useState('')
+    const [dob, setDob] = useState('')
 
-    const auth = useSelector((state) => state.auth)
-    const { errorMessageSignUp } = auth
-    const dispatch = useDispatch()
+    // const auth = useSelector((state) => state.auth)
+    // const { errorMessageSignUp } = auth
+    // const dispatch = useDispatch()
 
-    async function handleClick(params) {
-        dispatch(Signup(username, email, password))
+    // async function handleClick(params) {
+    //     dispatch(Signup(username, email, password, phone, gender, liscence, aadhar, dob))
+    // }
+
+    function generateOTP() {
+        // Generate a random 4-digit number
+        const otp = Math.floor(1000 + Math.random() * 9000);
+        return otp.toString(); // Convert the number to a string
+    }
+
+    function handleRegister(params) {
+        const otp = generateOTP()
+        const SMSDATA = [
+            {
+                phone: phone,
+                msg: `Your OTP for E-commute is ${otp}. Valid Only for 10 minutes`
+            }
+        ]
+        sendSmsData(SMSDATA)
+        navigation.navigate('VerifyAccount', { email: email, username: username, password: password, phone: phone, gender: gender, dob: dob, otp: otp })
     }
 
     return (
@@ -37,9 +58,47 @@ export default function Template({ navigation }) {
                         <MaterialCommunityIcons size={25} name={"account"} color={"white"} style={{ margin: 10 }} />
                     </View>
                     <TextInput
-                        placeholder='Username'
+                        placeholder='Name'
                         onChangeText={(text) => setUsename(text)}
                         value={username}
+                        style={{ height: 48, width: "85%" }}
+                    />
+                </View>
+                <View style={{ flexDirection: "row", backgroundColor: "white", borderWidth: 1, borderColor: colorTheme.borderColor, borderRadius: 10, marginBottom: 5 }}>
+                    <View
+                        style={{ backgroundColor: colorTheme.primaryColor, borderTopLeftRadius: 10, borderBottomLeftRadius: 10, justifyContent: 'center', alignItems: 'center' }}>
+                        <MaterialCommunityIcons size={25} name={"cellphone"} color={"white"} style={{ margin: 10 }} />
+                    </View>
+                    <TextInput
+                        keyboardType='numeric'
+                        placeholder='Phone'
+                        onChangeText={(text) => setPhone(text)}
+                        value={phone}
+                        style={{ height: 48, width: "85%" }}
+                    />
+                </View>
+                <View style={{ flexDirection: "row", backgroundColor: "white", borderWidth: 1, borderColor: colorTheme.borderColor, borderRadius: 10, marginBottom: 5 }}>
+                    <View
+                        style={{ backgroundColor: colorTheme.primaryColor, borderTopLeftRadius: 10, borderBottomLeftRadius: 10, justifyContent: 'center', alignItems: 'center' }}>
+                        <MaterialCommunityIcons size={25} name={"calendar"} color={"white"} style={{ margin: 10 }} />
+                    </View>
+                    <TextInput
+
+                        placeholder='DOB(22-01-2024)'
+                        onChangeText={(text) => setDob(text)}
+                        value={dob}
+                        style={{ height: 48, width: "85%" }}
+                    />
+                </View>
+                <View style={{ flexDirection: "row", backgroundColor: "white", borderWidth: 1, borderColor: colorTheme.borderColor, borderRadius: 10, marginBottom: 5 }}>
+                    <View
+                        style={{ backgroundColor: colorTheme.primaryColor, borderTopLeftRadius: 10, borderBottomLeftRadius: 10, justifyContent: 'center', alignItems: 'center' }}>
+                        <MaterialCommunityIcons size={25} name={"gender-male"} color={"white"} style={{ margin: 10 }} />
+                    </View>
+                    <TextInput
+                        placeholder='Male/Female'
+                        onChangeText={(text) => setGender(text)}
+                        value={gender}
                         style={{ height: 48, width: "85%" }}
                     />
                 </View>
@@ -62,30 +121,13 @@ export default function Template({ navigation }) {
                     </View>
                     <TextInput
                         placeholder='Password'
-                        secureTextEntry
                         onChangeText={(text) => setPassword(text)}
                         value={password}
                         style={{ height: 48, width: "85%" }}
                     />
                 </View>
-                <View style={{ flexDirection: "row", backgroundColor: "white", borderWidth: 1, borderColor: colorTheme.borderColor, borderRadius: 10, marginBottom: 5 }}>
-                    <View
-                        style={{ backgroundColor: colorTheme.primaryColor, borderTopLeftRadius: 10, borderBottomLeftRadius: 10, justifyContent: 'center', alignItems: 'center' }}>
-                        <MaterialCommunityIcons size={25} name={"lock"} color={"white"} style={{ margin: 10 }} />
-                    </View>
-                    <TextInput
-                        secureTextEntry
-                        placeholder='Confirm Password'
-                        onChangeText={(text) => setConfirmPassword(text)}
-                        value={confirmPassword}
-                        style={{ height: 48, width: "85%" }}
-                    />
-                </View>
-                {errorMessageSignUp &&
-                    <Text style={[styles.smallText, { color: 'red', textAlign: 'center', marginBottom: 10 }]}>{errorMessageSignUp}</Text>
-                }
                 <TouchableOpacity
-                    onPress={() => { handleClick() }}
+                    onPress={() => { handleRegister() }}
                     style={{ backgroundColor: colorTheme.primaryColor, borderRadius: 10, justifyContent: 'center', alignItems: "center", marginTop: 30 }}
                 >
                     <Text style={[styles.smallText, { color: "white", margin: 14 }]}>Register</Text>
@@ -125,7 +167,7 @@ const styles = StyleSheet.create({
         // width: "90%",
         height: "auto",
         alignSelf: "center",
-        padding:20
+        padding: 20
         // backgroundColor:"red"
     },
     bigText: {

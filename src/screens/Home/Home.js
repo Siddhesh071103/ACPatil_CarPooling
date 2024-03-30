@@ -4,6 +4,7 @@ import { API_URL, colorTheme } from '../../constant'
 import ArticleCard from '../../components/ArticleCard'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import LocationModal from '../../components/Modal/LocationModal'
 import FilterModal from '../../components/Modal/FilterModal'
@@ -56,9 +57,16 @@ const SMSDATA = [
   },
 ]
 
-function Test(params) {
-  // PayNow()
+function generateOTP() {
+  // Generate a random 4-digit number
+  const otp = Math.floor(1000 + Math.random() * 9000);
+  return otp.toString(); // Convert the number to a string
 }
+function handleOtp() {
+  const otp = generateOTP()
+  console.log(otp);
+}
+
 
 function SendSOS(params) {
   sendSmsData(SMSDATA)
@@ -276,6 +284,38 @@ export default function Home({ navigation }) {
             onError={(error) => console.error('WebView error:', error)}
           />
         </View> */}
+        <View style={{backgroundColor:'#fff',height:150,width:'85%',borderRadius:20,elevation:10,padding:10}}>
+          <Text style={{fontWeight:'600',color:'black',paddingBottom:12,fontSize:16}}>Transfer Money</Text>
+          <View style={{flexDirection:'row',justifyContent:'space-around',display:'flex',flex:1}}>
+            <View style={{flex:1,borderRadius:10}}>
+              <TouchableOpacity
+                  style={{borderColor:'#d3d2d6',borderWidth:1,height:50,width:50,alignSelf:'center',margin:10,borderRadius:10,justifyContent:'center',alignItems:'center'}}
+                  onPress={() => setJoinRideModal(true)}
+                  >
+                    <Ionicons name="car-sport-sharp" size={40} color='#407CE2'/>
+              </TouchableOpacity>
+              <Text style={{textAlign:'center',fontSize:12}} >Join Ride</Text>
+            </View>
+            <View style={{flex:1,borderRadius:10}}>
+            <TouchableOpacity style={{borderColor:'#d3d2d6',borderWidth:1,height:50,width:50,alignSelf:'center',margin:10,borderRadius:10,justifyContent:'center',alignItems:'center'}}
+                 onPress={() => setStartJourneyModal(true)}
+            >
+              <FontAwesome5 name='walking' size={38} color="#407CE2"/>
+              </TouchableOpacity>
+              <Text style={{textAlign:'center',fontSize:12}}>Start Journey</Text>
+            </View>
+            <View style={{flex:1,borderRadius:10}}>
+            <TouchableOpacity style={{borderColor:'#d3d2d6',borderWidth:1,height:50,width:50,alignSelf:'center',margin:10,borderRadius:10,justifyContent:'center',alignItems:'center'}}>
+              </TouchableOpacity>
+            </View>
+            <View style={{flex:1,borderRadius:10}}>
+            <TouchableOpacity style={{borderColor:'#d3d2d6',borderWidth:1,height:50,width:50,alignSelf:'center',margin:10,borderRadius:10,justifyContent:'center',alignItems:'center'}}>
+              <MaterialIcons name="history" size={40} color="#407CE2"/>
+              </TouchableOpacity>
+              <Text style={{textAlign:'center',fontSize:12}}>History</Text>
+            </View>
+          </View>
+        </View>
 
         {/* registere destination start here  */}
         <View style={{ width: '90%', marginVertical: 20 }}>
@@ -295,7 +335,7 @@ export default function Home({ navigation }) {
         {/* end here  */}
 
         <View style={{ width: '90%', flexDirection: "row", justifyContent: 'space-between' }}>
-          <Text style={[styles.grayText, { marginBottom: 8,color:'black' }]}>Frequently Travelled Routes</Text>
+          <Text style={[styles.grayText, { marginBottom: 8, color: 'black' }]}>Frequently Travelled Routes</Text>
           <Text
             onPress={() => { setTopDoctorModal(true) }}
             style={[{ color: colorTheme.primaryColor, fontSize: 15 }]}>See All Rides</Text>
@@ -366,7 +406,7 @@ export default function Home({ navigation }) {
           </View>
         </View>
         <View style={{ width: '90%', flexDirection: "row", justifyContent: 'space-between', marginTop: 10 }}>
-          <Text style={[styles.grayText, {color:'black'}]}>Past Rides History</Text>
+          <Text style={[styles.grayText, { color: 'black' }]}>Past Rides History</Text>
         </View>
         {PastRideData.map((data, index) => (
           <View key={index} style={{ width: '90%' }}>

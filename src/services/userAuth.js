@@ -38,17 +38,16 @@ async function Logout(getState) {
     })
 }
 
-async function Signup(username, email, password) {
-    console.log(username);
+async function Signup(username, email, password, phone, gender, dob) {
+    console.log(phone, ' ', gender, ' ', ' ', dob, ' ',);
     return new Promise((resolve, reject) => {
         axios.post(`${API_URL}/user`, {
             name: username,
             email: email,
             password: password,
-            license: "6363633737373773",
-            aadhar: "6363-3838-3838",
-            dob: "2002-01-12",
-            gender: "Male"
+            dob: dob,
+            gender: gender,
+            phone: phone
         }).then(async (res) => {
             try {
                 await setAuthAsyncStorage(res)

@@ -10,7 +10,7 @@ import {
   useClearByFocusCell
 } from 'react-native-confirmation-code-field'
 import { useDispatch, useSelector } from 'react-redux'
-import { Verify } from '../../store/actions/auth'
+import { Signup } from '../../store/actions/auth'
 
 const CELL_SIZE = 70;
 const CELL_BORDER_RADIUS = 8;
@@ -35,23 +35,30 @@ const animateCell = ({ hasValue, index, isFocused }) => {
   ]).start();
 };
 
-export default function Verification({ navigation }) {
+export default function Verification({ navigation, route }) {
 
-  const dispatch = useDispatch()
   const auth = useSelector((state) => state.auth)
-  const { emailVerify,errorMessage } = auth
+  const [errorMessage, seterrorMessage] = useState('')
+  const { errorMessageSignUp } = auth
+  const dispatch = useDispatch()
 
-  const [value, setValue] = useState('')
+  const [value, setValue] = useState(null)
   const ref = useBlurOnFulfill({ value, cellCount: CELL_COUNT });
   const [props, getCellOnLayoutHandler] = useClearByFocusCell({
     value,
     setValue
   });
 
-  const handleVerify = () => {
-    dispatch(Verify(emailVerify, value))
+  function handleVerify() {
+    const { email, username, password, phone, gender, dob, otp } = route.params
+    if (value === otp) {
+      console.log(dob);
+      seterrorMessage(null)
+      dispatch(Signup(username, email, password, phone, gender, dob))
+    } else {
+      seterrorMessage('OTP Does Not Match')
+    }
   }
-
   const renderCell = ({ index, symbol, isFocused }) => {
     const hasValue = Boolean(symbol);
     const animatedCellStyle = {
@@ -109,9 +116,7 @@ export default function Verification({ navigation }) {
           Please enter the verification number
           we send to your email
         </Text>
-        {errorMessage &&
-          <Text style={[styles.smallText, { color: 'red', textAlign: 'center', marginBottom: 10 }]}>{errorMessage}</Text>
-        }
+
         <View>
           <CodeField
             ref={ref}
@@ -126,6 +131,7 @@ export default function Verification({ navigation }) {
           />
           <Text style={{ textAlign: 'left', marginTop: 10 }}>Don't receive a code?<Text style={[{ color: colorTheme.primaryColor, fontSize: 15, fontWeight: 'bold' }]}> Resend</Text></Text>
         </View>
+        {errorMessage && <Text style={{ color: 'red', textAlign: 'center', fontSize: 18, marginTop: 10 }}>{errorMessage}</Text>}
         <TouchableOpacity
           style={{ backgroundColor: colorTheme.primaryColor, borderRadius: 10, justifyContent: 'center', alignItems: "center", marginVertical: 50 }}
           onPress={handleVerify}
