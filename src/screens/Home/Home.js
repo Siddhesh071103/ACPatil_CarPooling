@@ -318,7 +318,7 @@ export default function Home({ navigation }) {
         </View>
 
         {/* registere destination start here  */}
-        {/* <View style={{ width: '90%', marginVertical: 20 }}>
+        <View style={{ width: '90%', marginVertical: 20 }}>
           <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
             <TouchableOpacity
               onPress={() => setJoinRideModal(true)}
@@ -331,15 +331,15 @@ export default function Home({ navigation }) {
               <Text numberOfLines={2} style={[styles.blueText, { color: "white", paddingHorizontal: 30, paddingVertical: 10 }]}>Start Journey</Text>
             </TouchableOpacity>
           </View>
-        </View> */}
+        </View>
         {/* end here  */}
 
-        {/* <View style={{ width: '90%', flexDirection: "row", justifyContent: 'space-between' }}>
+        <View style={{ width: '90%', flexDirection: "row", justifyContent: 'space-between' }}>
           <Text style={[styles.grayText, { marginBottom: 8,color:'black' }]}>Frequently Travelled Routes</Text>
           <Text
             onPress={() => { setTopDoctorModal(true) }}
             style={[{ color: colorTheme.primaryColor, fontSize: 15 }]}>See All Rides</Text>
-        </View> */}
+        </View>
         <Carousel data={data} autoPlay>
           <CarCard isNavigate />
         </Carousel>
