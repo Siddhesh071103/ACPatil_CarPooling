@@ -56,9 +56,16 @@ const SMSDATA = [
   },
 ]
 
-function Test(params) {
-  // PayNow()
+function generateOTP() {
+  // Generate a random 4-digit number
+  const otp = Math.floor(1000 + Math.random() * 9000);
+  return otp.toString(); // Convert the number to a string
 }
+function handleOtp() {
+  const otp = generateOTP()
+  console.log(otp);
+}
+
 
 function SendSOS(params) {
   sendSmsData(SMSDATA)
@@ -295,7 +302,7 @@ export default function Home({ navigation }) {
         {/* end here  */}
 
         <View style={{ width: '90%', flexDirection: "row", justifyContent: 'space-between' }}>
-          <Text style={[styles.grayText, { marginBottom: 8,color:'black' }]}>Frequently Travelled Routes</Text>
+          <Text style={[styles.grayText, { marginBottom: 8, color: 'black' }]}>Frequently Travelled Routes</Text>
           <Text
             onPress={() => { setTopDoctorModal(true) }}
             style={[{ color: colorTheme.primaryColor, fontSize: 15 }]}>See All Rides</Text>
@@ -366,7 +373,7 @@ export default function Home({ navigation }) {
           </View>
         </View>
         <View style={{ width: '90%', flexDirection: "row", justifyContent: 'space-between', marginTop: 10 }}>
-          <Text style={[styles.grayText, {color:'black'}]}>Past Rides History</Text>
+          <Text style={[styles.grayText, { color: 'black' }]}>Past Rides History</Text>
         </View>
         {PastRideData.map((data, index) => (
           <View key={index} style={{ width: '90%' }}>

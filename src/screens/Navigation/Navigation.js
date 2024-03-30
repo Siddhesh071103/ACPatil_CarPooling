@@ -45,56 +45,60 @@ import Survey from '../Survey/Survey'
 import HowYourDay from '../Survey/HowYourDay'
 import Helpless from '../Survey/Helpless'
 import Location from '../Profile/Location'
+import DemoCard from '../../components/DemoCard'
 
 const Stack = createNativeStackNavigator()
 
 export default function App() {
   return (
-      <Stack.Navigator initialRouteName='Splash'>
-        <Stack.Screen name='Splash' component={Splash} options={{ headerShown: false }} />
-        <Stack.Screen name='GetStarted' component={GetStarted} options={{ headerShown: false }} />
-        <Stack.Screen name='SignUp' component={SignUp} options={{ headerShown: false }} />
-        <Stack.Screen name='DoctorRegister' component={DoctorRegister} options={{ headerShown: false }} />
-        <Stack.Screen name='Login' component={Login} options={{ headerShown: false }} />
-        <Stack.Screen name='ForgetPassword' component={ForgetPassword} options={{ headerShown: false }} />
-        <Stack.Screen name='VerifyAccount' component={VerifyAccount} options={{ headerShown: false }} />
-        <Stack.Screen name='BottomTab' component={BottomTab} options={{ headerShown: false }} />
-        <Stack.Screen name='DoctorDetail' component={DoctorDetail} options={{ headerShown: false }} />
-        <Stack.Screen name='Hospital' component={Hospital} options={{ headerShown: false }} />
-        <Stack.Screen name='BookAppointment' component={BookAppointment} options={{ headerShown: false }} />
-        <Stack.Screen name='SelectAppointmentPackage' component={SelectAppointmentPackage} options={{ headerShown: false }} />
-        <Stack.Screen name='PatientDetails' component={PatientDetails} options={{ headerShown: false }} />
-        <Stack.Screen name='PaymentMethod' component={PaymentMethod} options={{ headerShown: false }} />
-        <Stack.Screen name='SuccesfullPayment' component={SuccesfullPayment} options={{ headerShown: false }} />
-        <Stack.Screen name='Message' component={Message} options={{ headerShown: false }} />
-        <Stack.Screen name='VideoCall' component={VideoCall} options={{ headerShown: false }} />
-        <Stack.Screen name='CancelBooking' component={CancelBooking} options={{ headerShown: false }} />
-        <Stack.Screen name='RescheduledAppointment' component={RescheduledAppointment} options={{ headerShown: false }} />
-        <Stack.Screen name='EditProfile' component={EditProfile} options={{ headerShown: false }} />
-        <Stack.Screen name='Settings' component={Settings} options={{ headerShown: false }} />
-        <Stack.Screen name='OfflineVideo' component={OfflineVideo} options={{ headerShown: false }} />
-        <Stack.Screen name='PasswordManager' component={PasswordManager} options={{ headerShown: false }} />
-        <Stack.Screen name='PrivacyPolicy' component={PrivacyPolicy} options={{ headerShown: false }} />
-        <Stack.Screen name='HelpCenter' component={HelpCenter} options={{ headerShown: false }} />
-        <Stack.Screen name='CompleteProfile' component={CompleteProfile} options={{ headerShown: false }} />
-        <Stack.Screen name='Favorites' component={Favorites} options={{ headerShown: false }} />
-        <Stack.Screen name='SuccesfullRegistration' component={SuccesfullRegistration} options={{ headerShown: false }} />
-        <Stack.Screen name='LoginChoice' component={LoginChoice} options={{ headerShown: false }} />
-        <Stack.Screen name='Olddisease' component={Olddisease} options={{ headerShown: false }} />
-        <Stack.Screen name='Activity' component={Activity} options={{ headerShown: false }} />
-        <Stack.Screen name='TicTacToe' component={TicTacToe} options={{ headerShown: false }} />
-        <Stack.Screen name='WordGuessGame' component={WordGuessGame} options={{ headerShown: false }} />
-        <Stack.Screen name='RockPaperScissor' component={RockPaperScissor} options={{ headerShown: false }} />
-        <Stack.Screen name='JokesGenerator' component={JokesGenerator} options={{ headerShown: false }} />
-        <Stack.Screen name='BubblePop' component={BubblePop} options={{ headerShown: false }} />
-        <Stack.Screen name='Workout' component={Workout} options={{ headerShown: false }} />
-        <Stack.Screen name='Music' component={Music} options={{ headerShown: false }} />
-        <Stack.Screen name='ChatBot' component={ChatBot} options={{ headerShown: false }} />
-        <Stack.Screen name='CheckMood' component={CheckMood} options={{ headerShown: false }} />
-        <Stack.Screen name='Survey' component={Survey} options={{ headerShown: false }} />
-        <Stack.Screen name='HowYourDay' component={HowYourDay} options={{ headerShown: false }} />
-        <Stack.Screen name='Helpless' component={Helpless} options={{ headerShown: false }} />
-        {/* <Stack.Screen name='Location' component={Location} options={{ headerShown: false }} /> */}
-      </Stack.Navigator>
+    <Stack.Navigator initialRouteName='Splash'>
+      {/* demo Card */}
+      <Stack.Screen name='demo' component={DemoCard} options={{ headerShown: false }} />
+      {/* demo Card */}
+      <Stack.Screen name='Splash' component={Splash} options={{ headerShown: false }} />
+      <Stack.Screen name='GetStarted' component={GetStarted} options={{ headerShown: false }} />
+      <Stack.Screen name='SignUp' component={SignUp} options={{ headerShown: false }} />
+      <Stack.Screen name='DoctorRegister' component={DoctorRegister} options={{ headerShown: false }} />
+      <Stack.Screen name='Login' component={Login} options={{ headerShown: false }} />
+      <Stack.Screen name='ForgetPassword' component={ForgetPassword} options={{ headerShown: false }} />
+      <Stack.Screen name='VerifyAccount' component={VerifyAccount} options={{ headerShown: false }} />
+      <Stack.Screen name='BottomTab' component={BottomTab} options={{ headerShown: false }} />
+      <Stack.Screen name='DoctorDetail' component={DoctorDetail} options={{ headerShown: false }} />
+      <Stack.Screen name='Hospital' component={Hospital} options={{ headerShown: false }} />
+      <Stack.Screen name='BookAppointment' component={BookAppointment} options={{ headerShown: false }} />
+      <Stack.Screen name='SelectAppointmentPackage' component={SelectAppointmentPackage} options={{ headerShown: false }} />
+      <Stack.Screen name='PatientDetails' component={PatientDetails} options={{ headerShown: false }} />
+      <Stack.Screen name='PaymentMethod' component={PaymentMethod} options={{ headerShown: false }} />
+      <Stack.Screen name='SuccesfullPayment' component={SuccesfullPayment} options={{ headerShown: false }} />
+      <Stack.Screen name='Message' component={Message} options={{ headerShown: false }} />
+      <Stack.Screen name='VideoCall' component={VideoCall} options={{ headerShown: false }} />
+      <Stack.Screen name='CancelBooking' component={CancelBooking} options={{ headerShown: false }} />
+      <Stack.Screen name='RescheduledAppointment' component={RescheduledAppointment} options={{ headerShown: false }} />
+      <Stack.Screen name='EditProfile' component={EditProfile} options={{ headerShown: false }} />
+      <Stack.Screen name='Settings' component={Settings} options={{ headerShown: false }} />
+      <Stack.Screen name='OfflineVideo' component={OfflineVideo} options={{ headerShown: false }} />
+      <Stack.Screen name='PasswordManager' component={PasswordManager} options={{ headerShown: false }} />
+      <Stack.Screen name='PrivacyPolicy' component={PrivacyPolicy} options={{ headerShown: false }} />
+      <Stack.Screen name='HelpCenter' component={HelpCenter} options={{ headerShown: false }} />
+      <Stack.Screen name='CompleteProfile' component={CompleteProfile} options={{ headerShown: false }} />
+      <Stack.Screen name='Favorites' component={Favorites} options={{ headerShown: false }} />
+      <Stack.Screen name='SuccesfullRegistration' component={SuccesfullRegistration} options={{ headerShown: false }} />
+      <Stack.Screen name='LoginChoice' component={LoginChoice} options={{ headerShown: false }} />
+      <Stack.Screen name='Olddisease' component={Olddisease} options={{ headerShown: false }} />
+      <Stack.Screen name='Activity' component={Activity} options={{ headerShown: false }} />
+      <Stack.Screen name='TicTacToe' component={TicTacToe} options={{ headerShown: false }} />
+      <Stack.Screen name='WordGuessGame' component={WordGuessGame} options={{ headerShown: false }} />
+      <Stack.Screen name='RockPaperScissor' component={RockPaperScissor} options={{ headerShown: false }} />
+      <Stack.Screen name='JokesGenerator' component={JokesGenerator} options={{ headerShown: false }} />
+      <Stack.Screen name='BubblePop' component={BubblePop} options={{ headerShown: false }} />
+      <Stack.Screen name='Workout' component={Workout} options={{ headerShown: false }} />
+      <Stack.Screen name='Music' component={Music} options={{ headerShown: false }} />
+      <Stack.Screen name='ChatBot' component={ChatBot} options={{ headerShown: false }} />
+      <Stack.Screen name='CheckMood' component={CheckMood} options={{ headerShown: false }} />
+      <Stack.Screen name='Survey' component={Survey} options={{ headerShown: false }} />
+      <Stack.Screen name='HowYourDay' component={HowYourDay} options={{ headerShown: false }} />
+      <Stack.Screen name='Helpless' component={Helpless} options={{ headerShown: false }} />
+      {/* <Stack.Screen name='Location' component={Location} options={{ headerShown: false }} /> */}
+    </Stack.Navigator>
   )
 }

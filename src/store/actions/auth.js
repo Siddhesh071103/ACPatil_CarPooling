@@ -99,27 +99,17 @@ export const errorSignUp = (errormessage) => ({
     payload: errormessage
 })
 
-export const Signup = (username, email, password, isdoctor) => (dispatch) => {
+export const Signup = (username, email, password, phone, gender, dob) => (dispatch) => {
     dispatch(signingUp(true))
 
-    isdoctor ?
-        doctorServices.Signup(username, email, password).then(async (res) => {
-            await dispatch(signedUp(res.data));
-            navigate('SuccesfullRegistration')
-        }).catch((err) => {
-            dispatch(errorSignUp(err.response.data.error))
-        }).finally(() => {
-            dispatch(loggingIn(false));
-        })
-        :
-        userServices.Signup(username, email, password).then(async (res) => {
-            await dispatch(signedUp(res.data));
-            navigate('SuccesfullRegistration')
-        }).catch((err) => {
-            dispatch(errorSignUp(err.response.data.error))
-        }).finally(() => {
-            dispatch(loggingIn(false));
-        })
+    userServices.Signup(username, email, password, phone, gender, dob).then(async (res) => {
+        await dispatch(signedUp(res.data));
+        navigate('SuccesfullRegistration')
+    }).catch((err) => {
+        dispatch(errorSignUp(err.response.data.error))
+    }).finally(() => {
+        dispatch(loggingIn(false));
+    })
 }
 
 export const errorForgotPassword = (errormessage) => ({
