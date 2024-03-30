@@ -93,7 +93,7 @@ export default JoinRideModal = ({ modalVisible, setModalVisible }) => {
                     </View>
                     <TouchableOpacity
                         onPress={() => handleFind()}
-                        style={{ backgroundColor: colorTheme.primaryColor, borderRadius: 50, width: 80, alignSelf: 'center', marginTop: 10 }}>
+                        style={{ backgroundColor: colorTheme.primaryColor, borderRadius: 8, width: 80, marginTop: 10,marginLeft:10 ,marginBottom:50}}>
                         <Text numberOfLines={2} style={[styles.blueText, { color: "white", padding: 5, alignSelf: 'center' }]}>Find</Text>
                     </TouchableOpacity>
 
@@ -104,7 +104,7 @@ export default JoinRideModal = ({ modalVisible, setModalVisible }) => {
                             loop
                             style={{ width: 300, height: 300 }}
                         />
-                        <Text style={[styles.bigText, { fontSize: 25, textAlign: 'center' }]}>Find Your Travel Campanion !!!</Text>
+                        {/* <Text style={[styles.bigText, { fontSize: 25, textAlign: 'center' }]}>Find Your Travel Campanion !!!</Text> */}
                     </>}
 
 

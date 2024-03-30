@@ -46,6 +46,7 @@ import HowYourDay from '../Survey/HowYourDay'
 import Helpless from '../Survey/Helpless'
 import Location from '../Profile/Location'
 import DemoCard from '../../components/DemoCard'
+import Appointment from '../AppointMents/Appointment'
 
 const Stack = createNativeStackNavigator()
 
@@ -98,7 +99,8 @@ export default function App() {
       <Stack.Screen name='Survey' component={Survey} options={{ headerShown: false }} />
       <Stack.Screen name='HowYourDay' component={HowYourDay} options={{ headerShown: false }} />
       <Stack.Screen name='Helpless' component={Helpless} options={{ headerShown: false }} />
-      {/* <Stack.Screen name='Location' component={Location} options={{ headerShown: false }} /> */}
+      <Stack.Screen name='Location' component={Location} options={{ headerShown: false }} /> 
+      <Stack.Screen name='Appointment' component={Appointment} options={{ headerShown: false }} /> 
     </Stack.Navigator>
   )
 }

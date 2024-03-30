@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { API_URL, colorTheme } from '../../constant'
 import ArticleCard from '../../components/ArticleCard'
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons"
+import EvilIcons from "react-native-vector-icons/EvilIcons"
+import AntDesign from 'react-native-vector-icons/AntDesign'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import Ionicons from 'react-native-vector-icons/Ionicons'
@@ -235,7 +237,23 @@ export default function Home({ navigation }) {
               : null
           }
         </>
-        <View style={{ width: "90%", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
+        <View style={{backgroundColor:'#407EC2',height:70,width:'100%',marginTop:0,marginBottom:15 ,flex:1,flexDirection:'row'}}> 
+          <View style={{flex:1.3,padding:10, flexDirection:"row",alignItems:'center',gap:10,paddingLeft:20}}>
+            <View style={{justifyContent:'center',}}>
+            <FontAwesome name="user-circle-o" size={40} color="#fff"/>
+            </View>
+            <View style={{justifyContent:'flex-start'}}>
+              <Text style={{fontSize:18,fontWeight:'600',color:'#fff'}}>UserName</Text>
+              <Text style={{color:'#fff'}}>UserDetails</Text>
+            </View>
+          </View>
+          <View style={{flex:1,flexDirection:'row',justifyContent:'space-evenly',alignItems:'center'}}>
+              <AntDesign name="qrcode" size={28} color="#ffff"/>
+              <MaterialIcons name="notifications-active" color="#fff" size={28} />
+              <EvilIcons name="question" size={30} color="#fff"/>
+          </View>
+        </View>
+        <View style={{ width: "90%", flexDirection: "row", justifyContent: "space-between", alignItems: "center"}}>
           <View>
             <Text style={{ color: "gray" }}>Location</Text>
             <Pressable
@@ -306,13 +324,17 @@ export default function Home({ navigation }) {
               <Text style={{textAlign:'center',fontSize:12}}>Start Journey</Text>
             </View>
             <View style={{flex:1,borderRadius:10}}>
-            <TouchableOpacity style={{borderColor:'#d3d2d6',borderWidth:1,height:50,width:50,alignSelf:'center',margin:10,borderRadius:10,justifyContent:'center',alignItems:'center'}}>
+            <TouchableOpacity style={{borderColor:'#d3d2d6',borderWidth:1,height:50,width:50,alignSelf:'center',margin:10,borderRadius:10,justifyContent:'center',alignItems:'center'}} 
+                onPress={()=>navigation.navigate('Location')}
+                >
               <MaterialCommunityIcons name="google-maps" size={40} color="#407CE2"/>
               </TouchableOpacity>
               <Text style={{textAlign:'center',fontSize:12}}>Maps</Text>
             </View>
             <View style={{flex:1,borderRadius:10}}>
-            <TouchableOpacity style={{borderColor:'#d3d2d6',borderWidth:1,height:50,width:50,alignSelf:'center',margin:10,borderRadius:10,justifyContent:'center',alignItems:'center'}}>
+            <TouchableOpacity style={{borderColor:'#d3d2d6',borderWidth:1,height:50,width:50,alignSelf:'center',margin:10,borderRadius:10,justifyContent:'center',alignItems:'center'}} 
+                  onPress={()=>navigation.navigate('Appointment')}
+            >
               <MaterialIcons name="history" size={40} color="#407CE2"/>
               </TouchableOpacity>
               <Text style={{textAlign:'center',fontSize:12}}>History</Text>
@@ -419,10 +441,15 @@ export default function Home({ navigation }) {
 
       </ScrollView >
     </View>
+
   )
 }
 
 const styles = StyleSheet.create({
+  background:{
+    backgroundColor:"#407EC2",
+    flex:1
+  },
   container: {
     flex: 1,
     // justifyContent: 'center',
@@ -430,8 +457,7 @@ const styles = StyleSheet.create({
     backgroundColor: colorTheme.appBackGroundColor
   },
   subcontainer: {
-    alignItems: 'center',
-    marginTop: 10,
+    alignItems: 'center'
 
   },
   textInput: {
