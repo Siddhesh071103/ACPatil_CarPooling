@@ -3,7 +3,8 @@ import React, { useState } from 'react'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { blackText, blueText, colorTheme, grayText } from '../../constant'
 import { journeyServices } from '../../services/Journey'
-// import {BlogServices} from '../../services/BlogsServices'
+import DateTimePicker from '@react-native-community/datetimepicker'
+import { Dropdown } from 'react-native-element-dropdown';
 
 export default function AddTaskModal({ modalVisible, setModalVisible }) {
     const [tripFrom, setTripFrom] = useState('')
@@ -18,6 +19,36 @@ export default function AddTaskModal({ modalVisible, setModalVisible }) {
         date: '',
         month: '',
     })
+
+    const [dateData, setdateData] = useState(new Date())
+    const [show, setshow] = useState(false)
+    const [text, setText] = useState('')
+
+    const [timeData, setTimeData] = useState(new Date())
+    const [showTime, setshowTime] = useState(false)
+    const [timeText, setTimeText] = useState('')
+
+    function onChange(event, selectedDate) {
+        const currentDate = selectedDate || dateData;
+        setdateData(currentDate);
+
+        let tempDate = new Date(currentDate);
+        let fDate = tempDate.getDate() + '/' + tempDate.getMonth() + '/' + tempDate.getFullYear();
+        setText(fDate)
+        setshow(false)
+    }
+
+    function onChangeTime(event, selectedDate) {
+        const currentTime = selectedDate || timeData;
+        setTimeData(currentTime);
+
+        let tempTime = new Date(currentTime);
+        let fTime = tempTime.getHours() + ':' + tempTime.getMinutes();
+        setTimeText(fTime)
+        setshowTime(false)
+        console.log('time---->', fTime);
+    }
+
 
     function getDate(params) {
         return `${date.year}-${date.month}-${date.date}`
@@ -54,6 +85,26 @@ export default function AddTaskModal({ modalVisible, setModalVisible }) {
             onRequestClose={() => {
                 setModalVisible(!modalVisible);
             }}>
+            {show && (
+                <DateTimePicker
+                    testId='dateTimePicker1'
+                    value={dateData}
+                    mode={'date'}
+                    is24Hour={true}
+                    display="default"
+                    onChange={onChange}
+                />
+            )}
+            {showTime && (
+                <DateTimePicker
+                    testId='dateTimePicker2'
+                    value={timeData}
+                    mode={'time'}
+                    // is24Hour={true}
+                    display="default"
+                    onChange={onChangeTime}
+                />
+            )}
             <View style={styles.container}>
                 <ScrollView style={styles.subContainer}>
                     <Pressable
@@ -132,40 +183,21 @@ export default function AddTaskModal({ modalVisible, setModalVisible }) {
                     </View>
                     <View style={{ marginTop: 20 }}>
                         <Text style={[styles.smallText, { color: 'black', marginBottom: 5 }]}>Date</Text>
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                            <TextInput
-                                style={[styles.textInput, { padding: 10, width: '30%' }]}
-                                placeholder='Year'
-                                onChangeText={(text) => setdate({ ...date, year: text })}
-                                value={date.year}
-                                keyboardType='number-pad'
-                            />
-
-                            <TextInput
-                                style={[styles.textInput, { padding: 10, width: '30%' }]}
-                                placeholder='Month'
-                                onChangeText={(text) => setdate({ ...date, month: text })}
-                                value={date.month}
-                                keyboardType='number-pad'
-                            />
-                            <TextInput
-                                style={[styles.textInput, { padding: 10, width: '30%' }]}
-                                placeholder='Date'
-                                onChangeText={(text) => setdate({ ...date, date: text })}
-                                value={date.date}
-                                keyboardType='number-pad'
-                            />
-                        </View>
+                        <TouchableOpacity
+                            onPress={() => { setshow(true) }}
+                            style={{ borderRadius: 10, borderWidth: 1, height: 50, borderColor: colorTheme.borderColor, justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row' }} >
+                            <Text style={{ marginLeft: 5 }}>{text === '' ? 'Enter Date' : text}</Text>
+                            <MaterialIcons name="date-range" color={colorTheme.primaryColor} size={25} style={{ marginRight: 10 }} />
+                        </TouchableOpacity>
                     </View>
                     <View style={{ marginTop: 20 }}>
-                        <Text style={[styles.smallText, { color: 'black', marginBottom: 5 }]}>Time</Text>
-                        <View style={styles.textInput}>
-                            <TextInput
-                                placeholder='3:00pm'
-                                onChangeText={(text) => setTime(text)}
-                                value={time}
-                            />
-                        </View>
+                        <Text style={[styles.smallText, { color: 'black', marginBottom: 5 }]}>Date</Text>
+                        <TouchableOpacity
+                            onPress={() => { setshowTime(true) }}
+                            style={{ borderRadius: 10, borderWidth: 1, height: 50, borderColor: colorTheme.borderColor, justifyContent: 'space-between', alignItems: 'center', flexDirection: 'row' }}>
+                            <Text style={{ marginLeft: 5 }}>{text === '' ? 'Enter Date' : text}</Text>
+                            <MaterialIcons name="date-range" color={colorTheme.primaryColor} size={25} style={{ marginRight: 10 }} />
+                        </TouchableOpacity>
                     </View>
                     {/* <Text onPress={convertAddresstocorr('Sakinaka')}>click here</Text> */}
                 </ScrollView>

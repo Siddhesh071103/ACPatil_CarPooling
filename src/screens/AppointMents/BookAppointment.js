@@ -1,13 +1,19 @@
 import { Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
-import { blackText, blueText,  colorTheme, grayText } from '../../constant'
+import { blackText, blueText, colorTheme, grayText } from '../../constant'
 import Header from '../../components/Header'
 import DoctorProfileCard from '../../components/DoctorProfileCard'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 const days = ["Mon", "Tue", "Wed", "Th", "Fr", "Sat", "Sun"]
 
-export default function BookAppointment({navigation}) {
+const data = {
+    Rides: 'Ride to Kandivali',
+    vehicle: 'Car',
+    location: 'MiraRoad,Mumbai',
+    lottieAssets: require('../../assets/json/ecolottie/carani.json')
+}
+export default function BookAppointment({ navigation }) {
     const [customSchedule, setCustomSchedule] = useState('')
     const [selectDay, setSelectDay] = useState(0)
     const [selectTime, setSelectTime] = useState(0)
@@ -17,7 +23,9 @@ export default function BookAppointment({navigation}) {
                 <View style={[styles.subContainer,]}>
                     <Header header={"Book Rides"} leftIconName={"chevron-back"} />
                 </View>
-                <DoctorProfileCard />
+                <View style={{ borderWidth: 1, borderColor: colorTheme.borderColor, width: '90%', alignSelf: 'center', borderRadius: 10, backgroundColor: 'white', elevation: 5 }}>
+                    <DoctorProfileCard item={data} />
+                </View>
                 <View style={[styles.subContainer, { marginTop: 30 }]}>
                     <View style={{ height: 'auto', }}>
                         <View style={{ flexDirection: "row", justifyContent: "space-evenly", alignItems: "center" }}>
@@ -29,7 +37,7 @@ export default function BookAppointment({navigation}) {
                                 <Text style={[styles.smallText, { textAlign: "center" }]}>Patients</Text>
                             </View>
                             <View>
-                                <View style={{ width: 50, height: 50, backgroundColor:colorTheme.iconBackGroundColor, justifyContent: "center", alignItems: "center", borderRadius: 50 }}>
+                                <View style={{ width: 50, height: 50, backgroundColor: colorTheme.iconBackGroundColor, justifyContent: "center", alignItems: "center", borderRadius: 50 }}>
                                     <MaterialCommunityIcons name="bag-checked" color={colorTheme.primaryColor} size={30} />
                                 </View>
                                 <Text style={[styles.bigText, { color: blueText.color, textAlign: "center" }]}>10+</Text>
@@ -51,15 +59,15 @@ export default function BookAppointment({navigation}) {
                             </View>
                         </View>
                     </View>
-                    <Text style={[styles.smallText, { lineHeight: 40,marginTop:30 }]}>Book Appointment</Text>
+                    <Text style={[styles.smallText, { lineHeight: 40, marginTop: 30 }]}>Book Appointment</Text>
                     <Text style={[styles.bigText, { fontWeight: "700", fontSize: 18 }]}>Day</Text>
                     <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} style={{ flexDirection: "row", marginTop: 10 }}>
                         {days.map((day, index) => {
                             return (
-                                <Pressable 
-                                key={index} 
-                                style={{ width: 100, height: 40, borderWidth: 1, borderColor: colorTheme.borderColor, borderRadius: 15, justifyContent: "center", alignItems: "center", marginRight: 5, backgroundColor: index === selectDay ? colorTheme.primaryColor : "white" }}
-                                onPress={() => setSelectDay(index)}
+                                <Pressable
+                                    key={index}
+                                    style={{ width: 100, height: 40, borderWidth: 1, borderColor: colorTheme.borderColor, borderRadius: 15, justifyContent: "center", alignItems: "center", marginRight: 5, backgroundColor: index === selectDay ? colorTheme.primaryColor : "white" }}
+                                    onPress={() => setSelectDay(index)}
                                 >
                                     <Text style={[styles.smallText, { fontWeight: '300', color: index === selectDay ? "white" : "black" }]}>{day}</Text>
                                     <Text style={[styles.smallText, { fontWeight: '300', color: index === selectDay ? "white" : "black" }]}>{4 + index} Oct</Text>
@@ -107,7 +115,7 @@ export default function BookAppointment({navigation}) {
             }}>
                 <TouchableOpacity
                     style={{ backgroundColor: blueText.color, width: "90%", height: 40, borderRadius: 50, justifyContent: "center" }}
-                onPress={() => navigation.navigate('SelectAppointmentPackage')}
+                    onPress={() => navigation.navigate('SelectAppointmentPackage')}
                 >
                     <Text style={[styles.smallText, { color: "white", alignSelf: 'center' }]}>Make Appointment</Text>
                 </TouchableOpacity>

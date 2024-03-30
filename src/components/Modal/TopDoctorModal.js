@@ -16,13 +16,13 @@ const data = [
         vehicle: 'Bullet',
         location: 'Andheri,Mumbai',
         lottieAssets: require('../../assets/json/ecolottie/bikeani.json')
-    }, 
+    },
     {
         Rides: 'Ride to Borivali',
         vehicle: 'Car',
         location: 'Borivali,Mumbai',
         lottieAssets: require('../../assets/json/ecolottie/caranim2.json')
-    }, 
+    },
     {
         Rides: 'Ride to Vasai',
         vehicle: 'Bike',
@@ -78,7 +78,7 @@ const TopDoctorModal = ({ modalVisible, setModalVisible }) => {
                 <ScrollView showsVerticalScrollIndicator={false} style={styles.content}>
                     {data.map((dat, index) => (
                         <View key={index} style={{ backgroundColor: 'white', elevation: 2, borderRadius: 10, marginTop: 10 }}>
-                            <DoctorProfileCard isButtonRequire isHeartRequire item={dat}/>
+                            <DoctorProfileCard isButtonRequire isHeartRequire item={dat} />
                         </View>
                     ))}
                 </ScrollView>

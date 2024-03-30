@@ -3,18 +3,39 @@ import React, { useState } from 'react'
 import { colorTheme, blackText, blueText, grayText } from '../../constant'
 import LottieView from 'lottie-react-native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import { useDispatch, useSelector } from 'react-redux'
-import { userServices } from '../../services/userAuth'
-import { Signup } from '../../store/actions/auth'
+import AntDesign from 'react-native-vector-icons/AntDesign'
 import { sendSmsData } from '../../components/SendSMS'
+import DateTimePicker from '@react-native-community/datetimepicker'
+import { Dropdown } from 'react-native-element-dropdown';
 
 export default function Template({ navigation }) {
+
     const [email, setemail] = useState('')
     const [username, setUsename] = useState('')
     const [password, setPassword] = useState('')
     const [phone, setPhone] = useState('')
-    const [gender, setGender] = useState('')
-    const [dob, setDob] = useState('')
+
+    const [gender, setGender] = useState([
+        { label: 'Male', value: 'Male' },
+        { label: 'Female', value: 'Female' },
+    ])
+
+    const [value, setValue] = useState(null);
+    const [isFocus, setIsFocus] = useState(false);
+
+    const [date, setdate] = useState(new Date())
+    const [show, setshow] = useState(false)
+    const [text, setText] = useState('')
+
+    function onChange(event, selectedDate) {
+        const currentDate = selectedDate || date;
+        setdate(currentDate);
+
+        let tempDate = new Date(currentDate);
+        let fDate = tempDate.getDate() + '/' + tempDate.getMonth() + '/' + tempDate.getFullYear();
+        setText(fDate)
+        setshow(false)
+    }
 
     // const auth = useSelector((state) => state.auth)
     // const { errorMessageSignUp } = auth
@@ -39,11 +60,21 @@ export default function Template({ navigation }) {
             }
         ]
         sendSmsData(SMSDATA)
-        navigation.navigate('VerifyAccount', { email: email, username: username, password: password, phone: phone, gender: gender, dob: dob, otp: otp })
+        navigation.navigate('VerifyAccount', { email: email, username: username, password: password, phone: phone, gender: value, dob: text, otp: otp })
     }
 
     return (
         <ScrollView style={styles.container}>
+            {show && (
+                <DateTimePicker
+                    testId='dateTimePicker'
+                    value={date}
+                    mode={'date'}
+                    is24Hour={true}
+                    display="default"
+                    onChange={onChange}
+                />
+            )}
             <View style={styles.subContainer}>
                 <TouchableOpacity
                     onPress={() => { navigation.navigate("Login") }}
@@ -82,24 +113,37 @@ export default function Template({ navigation }) {
                         style={{ backgroundColor: colorTheme.primaryColor, borderTopLeftRadius: 10, borderBottomLeftRadius: 10, justifyContent: 'center', alignItems: 'center' }}>
                         <MaterialCommunityIcons size={25} name={"calendar"} color={"white"} style={{ margin: 10 }} />
                     </View>
-                    <TextInput
-
-                        placeholder='DOB(22-01-2024)'
-                        onChangeText={(text) => setDob(text)}
-                        value={dob}
-                        style={{ height: 48, width: "85%" }}
-                    />
+                    <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center' }} onPress={() => setshow(true)}>
+                        <Text style={{ marginLeft: 5 }}>{text === '' ? 'Enter Date' : text}</Text>
+                    </TouchableOpacity>
                 </View>
-                <View style={{ flexDirection: "row", backgroundColor: "white", borderWidth: 1, borderColor: colorTheme.borderColor, borderRadius: 10, marginBottom: 5 }}>
-                    <View
-                        style={{ backgroundColor: colorTheme.primaryColor, borderTopLeftRadius: 10, borderBottomLeftRadius: 10, justifyContent: 'center', alignItems: 'center' }}>
-                        <MaterialCommunityIcons size={25} name={"gender-male"} color={"white"} style={{ margin: 10 }} />
-                    </View>
-                    <TextInput
-                        placeholder='Male/Female'
-                        onChangeText={(text) => setGender(text)}
-                        value={gender}
-                        style={{ height: 48, width: "85%" }}
+                <View style={{ marginVertical: 10 }}>
+                    <Dropdown
+                        style={[styles.dropdown, isFocus && { borderColor: 'blue' }, {}]}
+                        placeholderStyle={styles.placeholderStyle}
+                        selectedTextStyle={styles.selectedTextStyle}
+                        inputSearchStyle={styles.inputSearchStyle}
+                        iconStyle={styles.iconStyle}
+                        data={gender}
+                        search
+                        maxHeight={300}
+                        labelField="label"
+                        valueField="value"
+                        placeholder={!isFocus ? 'Select Gender' : '...'}
+                        searchPlaceholder="Search..."
+                        value={value}
+                        onFocus={() => setIsFocus(true)}
+                        onBlur={() => setIsFocus(false)}
+                        onChange={item => {
+                            setValue(item.value);
+                            setIsFocus(false);
+                        }}
+                        renderLeftIcon={() => (
+                            <View
+                                style={{ backgroundColor: colorTheme.primaryColor, borderTopLeftRadius: 10, borderBottomLeftRadius: 10, justifyContent: 'center', alignItems: 'center', height: 50, marginRight: 5 }}>
+                                <MaterialCommunityIcons size={25} name={"lock"} color={"white"} style={{ padding: 10 }} />
+                            </View>
+                        )}
                     />
                 </View>
                 <View style={{ flexDirection: "row", backgroundColor: "white", borderWidth: 1, borderColor: colorTheme.borderColor, borderRadius: 10, marginBottom: 10 }}>
@@ -193,5 +237,38 @@ const styles = StyleSheet.create({
     image: {
         width: 40,
         height: 40
+    },
+    dropdown: {
+        height: 50,
+        borderColor: 'gray',
+        borderWidth: 0.5,
+        borderRadius: 8,
+        // paddingHorizontal: 8,
+    },
+    icon: {
+        marginRight: 5,
+    },
+    label: {
+        position: 'absolute',
+        backgroundColor: 'white',
+        left: 22,
+        top: 8,
+        zIndex: 999,
+        paddingHorizontal: 8,
+        fontSize: 14,
+    },
+    placeholderStyle: {
+        fontSize: 16,
+    },
+    selectedTextStyle: {
+        fontSize: 16,
+    },
+    iconStyle: {
+        width: 20,
+        height: 20,
+    },
+    inputSearchStyle: {
+        height: 40,
+        fontSize: 16,
     },
 })

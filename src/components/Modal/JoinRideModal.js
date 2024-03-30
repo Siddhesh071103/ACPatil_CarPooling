@@ -7,7 +7,6 @@ import LottieView from 'lottie-react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import { useNavigation } from '@react-navigation/native';
 
-
 export default JoinRideModal = ({ modalVisible, setModalVisible }) => {
     const [tripfrom, settripfrom] = useState('')
     const [tripTo, setTripTo] = useState('')
@@ -45,7 +44,7 @@ export default JoinRideModal = ({ modalVisible, setModalVisible }) => {
     const navigation = useNavigation()
 
     function handleNavigation() {
-        navigation.navigate('DoctorDetail', { tripfrom: tripfrom,tripTo:tripTo })
+        navigation.navigate('DoctorDetail', { tripfrom: tripfrom, tripTo: tripTo })
         setModalVisible(!modalVisible);
     }
 
@@ -118,7 +117,7 @@ export default JoinRideModal = ({ modalVisible, setModalVisible }) => {
                             />
                         </View>
                         : <>
-                            {data.length === 0 && !defaultState  &&
+                            {data.length === 0 && !defaultState &&
                                 <View style={{ alignSelf: 'center' }}>
                                     <LottieView
                                         source={require('../../assets/json/ecolottie/not-found.json')}
