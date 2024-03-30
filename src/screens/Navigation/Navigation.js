@@ -97,7 +97,6 @@ export default function App() {
         <Stack.Screen name='Helpless' component={Helpless} options={{ headerShown: false }} />
         <Stack.Screen name='Appointment' component={Appointment} options={{ headerShown: false }} />
         <Stack.Screen name='Location' component={Location} options={{ headerShown: false }} />
-        {/* <Stack.Screen name='Location' component={Location} options={{ headerShown: false }} /> */}
       </Stack.Navigator>
   )
 }
