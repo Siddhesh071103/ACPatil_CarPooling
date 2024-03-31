@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { API_URL, colorTheme } from '../../constant'
 import ArticleCard from '../../components/ArticleCard'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import AntDesign from 'react-native-vector-icons/AntDesign'
+import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
@@ -27,6 +29,8 @@ import DoctorCard from '../../components/DoctorCard'
 import DoctorCompletedCard from '../../components/DoctorCompletedCard'
 import CarCard from '../../components/CarCard'
 import LottieView from 'lottie-react-native'
+import QrScanModal from '../../components/Modal/QrScanModal'
+import { journeyServices } from '../../services/Journey'
 
 const data = [
   {
@@ -77,10 +81,10 @@ const SCORE_POINTER = 0
 
 export default function Home({ navigation }) {
 
-  const [article, setarticle] = useState({})
-  const [articleLoading, setarticleLoading] = useState(false)
+  const [userData, setuserData] = useState({})
+  const [userDataLoading, setuserDataLoading] = useState(false)
+
   const [search, setSearch] = useState('')
-  const [isPost, setIsPost] = useState(false)
   const [modalVisible, setModalVisible] = useState(false);
   const [filterModal, setFilterModal] = useState(false)
   const [notificationModal, setNotificationModal] = useState(false)
@@ -93,36 +97,35 @@ export default function Home({ navigation }) {
   const [journalModal, setjournalModalModal] = useState(false);
   const [startJourneyModal, setStartJourneyModal] = useState(false)
   const [joinRideModal, setJoinRideModal] = useState(false)
-  const [score, setScore] = useState(0);
   const [blogScreenModal, setBlogScreenModal] = useState(false)
+  const [qrScanModal, setQrScanModal] = useState(false)
   const [ModalData, setBlogModalData] = useState({
     title: '',
     desc: '',
     img: ''
   })
-  const [currentLevel, setCurrentLevel] = useState(0); // Initialize with level 0
-
-  const levels = [
-    { threshold: 150, source: require('../../assets/json/level-intial-batch.json') },
-    { threshold: 500, source: require('../../assets/json/level-0-batch.json') },
-    { threshold: 2000, source: require('../../assets/json/level-1-batch.json') },
-    { threshold: 5000, source: require('../../assets/json/level-2-batch.json') },
-    { threshold: 10000, source: require('../../assets/json/level-3-batch.json') },
-    { threshold: 20000, source: require('../../assets/json/level-5-batch.json') },
-  ];
 
 
-  // useEffect(() => {
-  //   articlesServices.FetchArticles().then((
-  //     res => {
-  //       console.log(res);
-  //       setarticle(res.data.articles)
-  //       setarticleLoading(true)
-  //     }
-  //   )).catch(err => { console.log('error fetching data'); })
+  useEffect(() => {
+    setuserDataLoading(true)
+    journeyServices.GetUserData().then(res => {
+      console.log(res.data);
+      setuserData(res.data)
+      setuserDataLoading(false)
+    })
 
+  }, [])
 
-  // }, [])
+  const SMSDATA = [
+    {
+      phone: '9869852633',
+      msg: "HELP ME !!! There is Some Emergency Please Contact Urgently !!!"
+    },
+  ]
+
+  function handleSOS() {
+    sendSmsData(SMSDATA)
+  }
 
   return (
     <View style={styles.container}>
@@ -144,15 +147,10 @@ export default function Home({ navigation }) {
           // SendSOS()
         }}
         style={styles.fixedComponent}>
-        <View style={styles.iconContainer}>
-          <Pressable onPress={() => { navigation.navigate('ChatBot') }}>
-            <LottieView
-              source={require('../../assets/json/bot.json')}
-              autoPlay
-              loop
-              style={{ width: 90, height: 90 }}
-            />
-          </Pressable>
+        <View style={[styles.iconContainer, { borderRadius: 50 }]}>
+          <TouchableOpacity onPress={() => { handleSOS() }}>
+            <Image source={require('../../assets/img/sos2.jpg')} style={{ resizeMode: 'cover', width: 100, height: 100 }} borderRadius={50} />
+          </TouchableOpacity>
         </View>
       </Pressable>
       <ScrollView contentContainerStyle={styles.subcontainer}>
@@ -233,26 +231,32 @@ export default function Home({ navigation }) {
               <JoinRideModal modalVisible={joinRideModal} setModalVisible={setJoinRideModal} />
               : null
           }
+          {
+            qrScanModal
+              ?
+              <QrScanModal modalVisible={qrScanModal} setModalVisible={setQrScanModal} />
+              : null
+          }
         </>
-        <View style={{ width: "90%", flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
-          <View>
-            <Text style={{ color: "gray" }}>Location</Text>
-            <Pressable
-              style={{ flexDirection: "row", alignItems: 'center' }}
-              onPress={() => setModalVisible(true)}
-            >
-              <MaterialIcons name="location-pin" color={colorTheme.primaryColor} size={25} />
-              <Text style={{ color: "black", fontSize: 15, fontWeight: "700" }}>Malad,Mumbai</Text>
-              <MaterialIcons name="keyboard-arrow-down" color={colorTheme.primaryColor} size={25} />
-            </Pressable>
+        <View style={{ backgroundColor: '#407EC2', height: 70, width: '100%', marginTop: 0, marginBottom: 15, flex: 1, flexDirection: 'row' }}>
+          <View style={{ flex: 1.3, padding: 10, flexDirection: "row", alignItems: 'center', gap: 10, paddingLeft: 20 }}>
+            <View style={{ justifyContent: 'center', }}>
+              <FontAwesome name="user-circle-o" size={40} color="#fff" />
+            </View>
+            {userDataLoading ? <ActivityIndicator size={'large'} color={'white'} /> :
+              <View style={{ justifyContent: 'flex-start' }}>
+                <Text style={{ fontSize: 18, fontWeight: '600', color: '#fff' }}>{userData.name}</Text>
+                <Text style={{ color: '#fff' }}>{userData.email}</Text>
+              </View>
+            }
           </View>
-          <View
-            style={{ backgroundColor: "white", justifyContent: "center", alignItems: "center", borderRadius: 50, flexDirection: 'row' }}>
-            {/* <MaterialIcons name="videocam" color={colorTheme.primaryColor} size={25} style={{ marginRight: 10 }} onPress={() => { navigation.navigate("VideoCall") }} /> */}
-            <MaterialIcons name="notifications-active" color={colorTheme.primaryColor} size={25} style={{}} onPress={() => setNotificationModal(true)} />
-            {/* <FontAwesome name="pencil-square-o" color={colorTheme.primaryColor} size={25} style={{ marginRight: 10 }} onPress={() => setjournalModalModal(true)} /> */}
+          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center' }}>
+            <AntDesign name="qrcode" size={28} color="#ffff" onPress={() => setQrScanModal(true)} />
+            <MaterialIcons name="notifications-active" color="#fff" size={28} onPress={() => setNotificationModal(true)} />
+            <EvilIcons name="question" size={30} color="#fff" />
           </View>
         </View>
+
         <View style={{ width: '90%', marginBottom: 10, flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
           <View style={styles.textInput}>
             <MaterialIcons name="search" color={colorTheme.primaryColor} size={25} />
@@ -285,9 +289,9 @@ export default function Home({ navigation }) {
           />
         </View> */}
         {/* here start 4 buttom cord  */}
-        <View style={{ backgroundColor: '#fff', height: 150, width: '85%', borderRadius: 20, elevation: 10, padding: 10 }}>
-          <Text style={{ fontWeight: '600', color: 'black', paddingBottom: 12, fontSize: 16 }}>Transfer Money</Text>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-around', display: 'flex', flex: 1 }}>
+        <View style={{ backgroundColor: '#fff', height: 120, width: '90%', borderRadius: 10, elevation: 10, padding: 10, }}>
+          {/* <Text style={{ fontWeight: '600', color: 'black', paddingBottom: 12, fontSize: 16 }}></Text> */}
+          <View style={{ flexDirection: 'row', justifyContent: 'space-around', display: 'flex', flex: 1, alignItems: 'center' }}>
             <View style={{ flex: 1, borderRadius: 10 }}>
               <TouchableOpacity
                 style={{ borderColor: '#d3d2d6', borderWidth: 1, height: 50, width: 50, alignSelf: 'center', margin: 10, borderRadius: 10, justifyContent: 'center', alignItems: 'center' }}
@@ -306,11 +310,17 @@ export default function Home({ navigation }) {
               <Text style={{ textAlign: 'center', fontSize: 12 }}>Start Journey</Text>
             </View>
             <View style={{ flex: 1, borderRadius: 10 }}>
-              <TouchableOpacity style={{ borderColor: '#d3d2d6', borderWidth: 1, height: 50, width: 50, alignSelf: 'center', margin: 10, borderRadius: 10, justifyContent: 'center', alignItems: 'center' }}>
+              <TouchableOpacity
+                onPress={() => { navigation.navigate('Location') }}
+                style={{ borderColor: '#d3d2d6', borderWidth: 1, height: 50, width: 50, alignSelf: 'center', margin: 10, borderRadius: 10, justifyContent: 'center', alignItems: 'center' }}>
+                <MaterialIcons name="location-pin" size={40} color="#407CE2" />
               </TouchableOpacity>
+              <Text style={{ textAlign: 'center', fontSize: 12 }}>Maps</Text>
             </View>
             <View style={{ flex: 1, borderRadius: 10 }}>
-              <TouchableOpacity style={{ borderColor: '#d3d2d6', borderWidth: 1, height: 50, width: 50, alignSelf: 'center', margin: 10, borderRadius: 10, justifyContent: 'center', alignItems: 'center' }}>
+              <TouchableOpacity
+                onPress={() => { navigation.navigate('Appointment') }}
+                style={{ borderColor: '#d3d2d6', borderWidth: 1, height: 50, width: 50, alignSelf: 'center', margin: 10, borderRadius: 10, justifyContent: 'center', alignItems: 'center' }}>
                 <MaterialIcons name="history" size={40} color="#407CE2" />
               </TouchableOpacity>
               <Text style={{ textAlign: 'center', fontSize: 12 }}>History</Text>
@@ -318,32 +328,6 @@ export default function Home({ navigation }) {
           </View>
         </View>
         {/* end here  */}
-        {/* registere destination start here  */}
-        <View style={{ width: '90%', marginVertical: 20 }}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-            <TouchableOpacity
-              onPress={() => setJoinRideModal(true)}
-              style={{ backgroundColor: "white", borderWidth: 1, borderColor: colorTheme.primaryColor, borderRadius: 50 }}>
-              <Text numberOfLines={2} style={[styles.blueText, { paddingHorizontal: 45, paddingVertical: 10 }]}>Join Ride</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => setStartJourneyModal(true)}
-              style={{ backgroundColor: colorTheme.primaryColor, borderRadius: 50 }}>
-              <Text numberOfLines={2} style={[styles.blueText, { color: "white", paddingHorizontal: 30, paddingVertical: 10 }]}>Start Journey</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-        {/* end here  */}
-
-        <View style={{ width: '90%', flexDirection: "row", justifyContent: 'space-between' }}>
-          <Text style={[styles.grayText, { marginBottom: 8, color: 'black' }]}>Frequently Travelled Routes</Text>
-          <Text
-            onPress={() => { setTopDoctorModal(true) }}
-            style={[{ color: colorTheme.primaryColor, fontSize: 15 }]}>See All Rides</Text>
-        </View>
-        <Carousel data={data} autoPlay>
-          <CarCard isNavigate />
-        </Carousel>
 
         {/* dashboard start here  */}
         <View style={{ width: '90%', backgroundColor: 'white', elevation: 4, padding: 10, marginBottom: 10, borderRadius: 10, borderTopEndRadius: 50, marginTop: 15 }}>
@@ -406,6 +390,19 @@ export default function Home({ navigation }) {
             </View>
           </View>
         </View>
+
+
+
+        <View style={{ width: '90%', flexDirection: "row", justifyContent: 'space-between', marginTop: 20 }}>
+          <Text style={[styles.grayText, { marginBottom: 8, color: 'black' }]}>Frequently Travelled Routes</Text>
+          <Text
+            onPress={() => { setTopDoctorModal(true) }}
+            style={[{ color: colorTheme.primaryColor, fontSize: 15 }]}>See All Rides</Text>
+        </View>
+        <Carousel data={data} autoPlay>
+          <CarCard isNavigate />
+        </Carousel>
+
         <View style={{ width: '90%', flexDirection: "row", justifyContent: 'space-between', marginTop: 10 }}>
           <Text style={[styles.grayText, { color: 'black' }]}>Past Rides History</Text>
         </View>
@@ -429,7 +426,7 @@ const styles = StyleSheet.create({
   },
   subcontainer: {
     alignItems: 'center',
-    marginTop: 10,
+    // marginTop: 10,÷
 
   },
   textInput: {

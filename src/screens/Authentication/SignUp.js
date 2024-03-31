@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import { colorTheme, blackText, blueText, grayText } from '../../constant'
 import LottieView from 'lottie-react-native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
-import AntDesign from 'react-native-vector-icons/AntDesign'
 import { sendSmsData } from '../../components/SendSMS'
 import DateTimePicker from '@react-native-community/datetimepicker'
 import { Dropdown } from 'react-native-element-dropdown';

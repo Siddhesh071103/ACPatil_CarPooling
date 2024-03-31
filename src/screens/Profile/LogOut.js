@@ -9,6 +9,7 @@ const App = ({ modalVisible, setModalVisible }) => {
     async function handleLogOut(params) {
         try {
             await AsyncStorage.removeItem('userToken')
+            await AsyncStorage.removeItem('userData')
             setModalVisible(!modalVisible)
             navigate('Login')
         } catch (error) {

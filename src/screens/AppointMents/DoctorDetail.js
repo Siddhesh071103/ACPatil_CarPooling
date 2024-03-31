@@ -9,6 +9,7 @@ import UnderLine from '../../components/UnderLine'
 import DoctorRenameCard from '../../components/DoctorRenameCard'
 import { journeyServices } from '../../services/Journey'
 import LiveLocationModal from '../../components/Modal/LiveLocationModal'
+import ReviewScreen from '../../components/Modal/ReviewModal'
 
 export default function DoctorDetail({ navigation, route }) {
     const Days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
@@ -20,12 +21,17 @@ export default function DoctorDetail({ navigation, route }) {
     const [loading, setloading] = useState(true)
     const [tripFrom, setTripFrom] = useState([])
     const [tripTo, setTripTo] = useState([])
+    const [reviewModal, setreviewModal] = useState(false)
+    const [data, setdata] = useState(route.params.data)
+    const [dataRating, setdataRating] = useState([])
     const toggleNumberOfLines = () => {
         setTextShown(!textShown)
     }
     const onTextLayout = useCallback(e => {
         setLengthMore(e.nativeEvent.lines.length >= 4)
     }, [])
+
+
 
     // function fetchDetails() {
     //     console.log(route.params.address);
@@ -40,39 +46,61 @@ export default function DoctorDetail({ navigation, route }) {
 
     useEffect(() => {
         async function fetchLat(params) {
-            const addressFrom = await route.params.tripfrom
-            const addressTo = await route.params.tripTo
-            journeyServices.FetchLatLong(addressFrom).then(res => {
+            journeyServices.FetchLatLong(data.tripfrom).then(res => {
                 setTripFrom(res.data.features[0].geometry.coordinates)
             })
 
-            journeyServices.FetchLatLong(addressTo).then(res => {
+            journeyServices.FetchLatLong(data.tripto).then(res => {
                 setTripTo(res.data.features[0].geometry.coordinates)
             })
         }
+
+        async function fetchRating(params) {
+            setloading(true)
+            journeyServices.GetRating(data.user).then(res => {
+                console.log('rating-->', res.data);
+                setdataRating(res.data)
+                setloading(false)
+            });
+        }
         fetchLat()
+        fetchRating()
     }, [])
 
     return (
         <View style={styles.container}>
             {modalVisible
                 ?
-                <LiveLocationModal modalVisible={modalVisible} setModalVisible={setModalVisible} tripFromLoc={tripFrom} TripToLoc={tripTo}/>
+                <LiveLocationModal modalVisible={modalVisible} setModalVisible={setModalVisible} tripFromLoc={tripFrom} TripToLoc={tripTo} />
+                : null
+            }
+            {reviewModal
+                ?
+                <ReviewScreen modalVisible={reviewModal} setModalVisible={setreviewModal} rideId={data._id} driverId={data.user} />
                 : null
             }
             <ScrollView >
-                <View style={[styles.subContainer, { marginTop: 2 }]}>
+                <View style={[styles.subContainer, { marginTop: 2, marginBottom: 10 }]}>
                     <Header header={"Journey Details"} leftIconName={"chevron-back"} rightIconName={"share-social-outline"} />
                 </View>
-                <View style={{ padding: 10 }}>
+                <View style={{ padding: 10, marginTop: 10, borderWidth: 1, width: '95%', alignSelf: 'center', borderRadius: 10, backgroundColor: 'white', elevation: 2, borderColor: colorTheme.borderColor }}>
                     <View style={{ margin: 15, flexDirection: "row", height: 100, justifyContent: 'center', alignItems: "center", }}>
                         <Image source={require('../../assets/img/car.jpg')} resizeMode='contain' style={styles.image} />
-                        <View style={{ width: "60%", marginLeft: 16, height: 100 }}>
-                            <Text style={styles.bigText}>Ride to {route.params.tripfrom}</Text>
-                            <Text style={[styles.smallText, { marginTop: 1 }]}>Swift Desire(Car)</Text>
-                            <View style={{ flexDirection: "row", alignItems: 'center', marginTop: 5 }}>
-                                <MaterialIcons name="location-pin" color={colorTheme.primaryColor} size={25} />
-                                <Text style={styles.smallText}>Malda,West</Text>
+                        <View style={{ width: "60%", marginLeft: 16, height: 100, }}>
+                            <Text style={styles.bigText}>Ride from {data.tripfrom} to {data.tripto}</Text>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <Text style={[styles.smallText, { marginTop: 1 }]}>Vehicle({data.vehicletype})</Text>
+                                <Text style={[styles.smallText, { marginTop: 1 }]}>Seat Available({data.seatavailable})</Text>
+                            </View>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <View style={{ flexDirection: "row", alignItems: 'center', marginTop: 5 }}>
+                                    <MaterialIcons name="date-range" color={colorTheme.primaryColor} size={25} />
+                                    <Text style={styles.smallText}>{data.date}</Text>
+                                </View>
+                                <View style={{ flexDirection: "row", alignItems: 'center', marginTop: 5 }}>
+                                    <MaterialIcons name="watch-later" color={colorTheme.primaryColor} size={25} />
+                                    <Text style={styles.smallText}>{data.time}</Text>
+                                </View>
                             </View>
                             <Pressable style={{ marginTop: 5, justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center' }} onPress={() => { }}>
                                 <View style={{ flexDirection: 'row' }}>
@@ -90,32 +118,32 @@ export default function DoctorDetail({ navigation, route }) {
                 <View style={styles.subContainer}>
                     <View style={{ height: 'auto', }}>
                         <View style={{ flexDirection: "row", justifyContent: "space-evenly", alignItems: "center" }}>
-                            <View>
+                            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                                 <View style={{ width: 50, height: 50, backgroundColor: colorTheme.iconBackGroundColor, justifyContent: "center", alignItems: "center", borderRadius: 50 }}>
                                     <MaterialCommunityIcons name="account-group" color={colorTheme.primaryColor} size={30} />
                                 </View>
-                                <Text style={[styles.bigText, { color: blueText.color, textAlign: 'center' }]}>7,500+</Text>
-                                <Text style={[styles.smallText, { textAlign: "center" }]}>Patients</Text>
+                                <Text style={[styles.bigText, { color: blueText.color, textAlign: 'center' }]}>75+</Text>
+                                <Text style={[styles.smallText, { textAlign: "center" }]}>Passengers</Text>
                             </View>
-                            <View>
+                            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                                 <View style={{ width: 50, height: 50, backgroundColor: colorTheme.iconBackGroundColor, justifyContent: "center", alignItems: "center", borderRadius: 50 }}>
                                     <MaterialCommunityIcons name="bag-checked" color={colorTheme.primaryColor} size={30} />
                                 </View>
-                                <Text style={[styles.bigText, { color: blueText.color, textAlign: "center" }]}>10+</Text>
+                                <Text style={[styles.bigText, { color: blueText.color, textAlign: "center" }]}>5+</Text>
                                 <Text style={[styles.smallText, { textAlign: "center" }]}>Years Exp.</Text>
                             </View>
-                            <View>
+                            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                                 <View style={{ width: 50, height: 50, backgroundColor: colorTheme.iconBackGroundColor, justifyContent: "center", alignItems: "center", borderRadius: 50 }}>
                                     <MaterialCommunityIcons name="star" color={colorTheme.primaryColor} size={30} />
                                 </View>
-                                <Text style={[styles.bigText, { color: blueText.color, textAlign: "center" }]}>4.9+</Text>
+                                <Text style={[styles.bigText, { color: blueText.color, textAlign: "center" }]}>3.9+</Text>
                                 <Text style={[styles.smallText, { textAlign: "center" }]}>Rating</Text>
                             </View>
-                            <View>
+                            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                                 <View style={{ width: 50, height: 50, backgroundColor: colorTheme.iconBackGroundColor, justifyContent: "center", alignItems: "center", borderRadius: 50 }}>
                                     <MaterialCommunityIcons name="comment-processing" color={colorTheme.primaryColor} size={30} />
                                 </View>
-                                <Text style={[styles.bigText, { color: blueText.color, textAlign: "center" }]}>4,956</Text>
+                                <Text style={[styles.bigText, { color: blueText.color, textAlign: "center" }]}>4</Text>
                                 <Text style={[styles.smallText, { textAlign: "center" }]}>Review</Text>
                             </View>
                         </View>
@@ -126,7 +154,7 @@ export default function DoctorDetail({ navigation, route }) {
                                 onTextLayout={onTextLayout}
                                 numberOfLines={textShown ? undefined : 2}
                             >
-                                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Praesentium ex blanditiis, repellendus, recusandae repudiandae nihil incidunt quisquam quo aut officia et, nesciunt sed tempore explicabo maxime ipsum ratione optio eius.
+                                {data.description}
                             </Text>
                             {lengthMore ? <Text
                                 onPress={toggleNumberOfLines}
@@ -138,7 +166,7 @@ export default function DoctorDetail({ navigation, route }) {
                     <View style={{ height: "auto" }}>
                         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                             <Text style={styles.bigText}>Address</Text>
-                            <Pressable onPress={() => { setModalVisible(true)}}>
+                            <Pressable onPress={() => { setModalVisible(true) }}>
                                 <Text style={styles.blueText}>View on Map</Text>
                             </Pressable>
                         </View>
@@ -147,7 +175,7 @@ export default function DoctorDetail({ navigation, route }) {
                             <Text style={styles.bigText}>Reviews</Text>
                             <View style={{ flexDirection: "row" }}>
                                 <MaterialCommunityIcons name="pencil-plus" color={colorTheme.primaryColor} size={25} />
-                                <Text style={styles.blueText}>add review</Text>
+                                <Text onPress={() => { setreviewModal(true) }} style={styles.blueText}>add review</Text>
                             </View>
                         </View>
                         <View style={{ width: '90%', marginBottom: 10, flexDirection: "row", justifyContent: "space-between", alignItems: "center" }}>
@@ -176,9 +204,12 @@ export default function DoctorDetail({ navigation, route }) {
                             })}
                         </ScrollView>
                         <UnderLine marginTop={10} />
-                        <DoctorRenameCard name={"Dale Thiel"} rating={4.9} time={22} />
-                        <DoctorRenameCard name={"Tiffany Nitzsche"} rating={3.9} time={30} />
-
+                        {
+                            loading ? <Text>Loading....</Text> :
+                                dataRating.map((dat, index) => (
+                                    <DoctorRenameCard key={index} name={"Dale Thiel"} rating={dat.rating} time={dat.date} review={dat.review} id={dat.passenger} />
+                                ))
+                        }
                     </View>
                 </View>
             </ScrollView >
@@ -192,7 +223,7 @@ export default function DoctorDetail({ navigation, route }) {
                 justifyContent: "center",
                 alignItems: "center"
             }}>
-                <TouchableOpacity style={{ backgroundColor: blueText.color, width: "90%", height: 40, borderRadius: 50, justifyContent: "center" }} onPress={() => navigation.navigate('BookAppointment')}>
+                <TouchableOpacity style={{ backgroundColor: blueText.color, width: "90%", height: 40, borderRadius: 50, justifyContent: "center" }} onPress={() => navigation.navigate('SelectAppointmentPackage')}>
                     <Text style={[styles.smallText, { color: "white", alignSelf: 'center' }]}>Book Ride</Text>
                 </TouchableOpacity>
             </View>

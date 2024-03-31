@@ -12,17 +12,9 @@ export default JoinRideModal = ({ modalVisible, setModalVisible }) => {
     const [tripTo, setTripTo] = useState('')
     const [defaultState, setDefaultState] = useState(true)
     const [loading, setloading] = useState(false)
-    const [driverDetails, setdriverDetails] = useState({
-        vehicleName: '',
-        carImage: '',
-        driverName: ''
-    })
+    const [ratingData, setratingData] = useState([])
 
     const [data, setdata] = useState([])
-
-    // useEffect(() => {
-
-    // }, [])
 
     async function handleFind() {
         if (defaultState) {
@@ -43,8 +35,8 @@ export default JoinRideModal = ({ modalVisible, setModalVisible }) => {
 
     const navigation = useNavigation()
 
-    function handleNavigation() {
-        navigation.navigate('DoctorDetail', { tripfrom: tripfrom, tripTo: tripTo })
+    function handleNavigation(dataItem) {
+        navigation.navigate('DoctorDetail', { tripfrom: tripfrom, tripTo: tripTo, data: dataItem })
         setModalVisible(!modalVisible);
     }
 
@@ -131,7 +123,7 @@ export default JoinRideModal = ({ modalVisible, setModalVisible }) => {
                             {
                                 data.map((dat, index) => (
                                     <Pressable
-                                        onPress={() => { handleNavigation() }}
+                                        onPress={() => { handleNavigation(dat) }}
                                         key={index} style={{ flexDirection: 'row', justifyContent: 'space-between', backgroundColor: 'white', borderColor: colorTheme.borderColor, borderWidth: 1, elevation: 2, borderRadius: 20, padding: 5, marginTop: 10 }}>
                                         {dat.vehicletype === 'car' && <LottieView
                                             source={require('../../assets/json/ecolottie/carani.json')}

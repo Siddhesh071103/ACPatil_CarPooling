@@ -1,5 +1,7 @@
 import axios from "axios"
 import { API_URL, COMMON_USER } from "../constant";
+import AsyncStorage from "@react-native-async-storage/async-storage"
+
 
 function FetchLatLong(address) {
     console.log(address);
@@ -17,9 +19,9 @@ function FetchLatLong(address) {
     })
 }
 
-async function bookRide(tripfrom, tripto, vehicletype, vehiclecapacity, vehiclenumber, date, time) {
+async function bookRide(tripfrom, tripto, tripDesc, vehicletype, vehiclecapacity, vehiclenumber, date, time) {
     console.log(date, time);
-    const token = COMMON_USER
+    const token = await AsyncStorage.getItem("userToken")
     // const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjVjZmM2MDMwNjZlMjIwNjZlN2ZjOGRlIn0sImlhdCI6MTcwODExNjM0NX0.DnzbQIqxXVVhzZU741LFUXD33UpEBxAt6lbgAPRHCwM'
     const config = {
         headers: {
@@ -31,11 +33,11 @@ async function bookRide(tripfrom, tripto, vehicletype, vehiclecapacity, vehiclen
     const body = {
         tripfrom: tripfrom,
         tripto: tripto,
+        description: tripDesc,
         vehicletype: vehicletype,
         vehiclecapacity: vehiclecapacity,
         seatavailable: vehiclecapacity,
         vehicleNumber: vehiclenumber,
-        payment: "not paid",
         date: date,
         time: time
     }
@@ -57,7 +59,7 @@ async function bookRide(tripfrom, tripto, vehicletype, vehiclecapacity, vehiclen
 
 async function getAllRide(tripfrom, tripto) {
     // console.log(typeof priority);
-    const token = COMMON_USER
+    const token = await AsyncStorage.getItem("userToken")
     // const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjVjZmM2MDMwNjZlMjIwNjZlN2ZjOGRlIn0sImlhdCI6MTcwODExNjM0NX0.DnzbQIqxXVVhzZU741LFUXD33UpEBxAt6lbgAPRHCwM'
     const config = {
         headers: {
@@ -86,6 +88,126 @@ async function getAllRide(tripfrom, tripto) {
     })
 }
 
+async function AddRating(rideId, driverId, rating, review) {
+    // console.log(typeof priority);
+    const token = await AsyncStorage.getItem("userToken")
+    console.log(rideId, ' ', driverId, ' ', typeof rating, ' ', review);
+    // const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiNjVjZmM2MDMwNjZlMjIwNjZlN2ZjOGRlIn0sImlhdCI6MTcwODExNjM0NX0.DnzbQIqxXVVhzZU741LFUXD33UpEBxAt6lbgAPRHCwM'
+    const config = {
+        headers: {
+            'auth-token': token,
+        }
+    }
+
+    const body = {
+        ride: rideId,
+        driver: driverId,
+        rating: rating,
+        review: review
+    }
+
+
+    return new Promise((resolve, reject) => {
+        axios.post(`${API_URL}/ride/addrating`, body, config)
+            .then(async (response) => {
+                try {
+                    // console.log(response.data);
+                    // console.log(response);
+                    resolve(response)
+                } catch (e) { reject(e) }
+            }).catch((err) => {
+                console.log(err.response.data);
+                reject(err)
+            })
+    })
+}
+
+async function getUserName(id) {
+    const token = await AsyncStorage.getItem("userToken")
+
+    const config = {
+        headers: {
+            'auth-token': token,
+        }
+    }
+
+    const body = {
+        id: id
+    }
+
+
+    return new Promise((resolve, reject) => {
+        axios.post(`${API_URL}/ride/getusername`, body, config)
+            .then(async (response) => {
+                try {
+                    // console.log(response.data);
+                    // console.log(response);
+                    resolve(response)
+                } catch (e) { reject(e) }
+            }).catch((err) => {
+                console.log(err.response.data);
+                reject(err)
+            })
+    })
+}
+
+async function GetRating(driverId) {
+    const token = await AsyncStorage.getItem("userToken")
+    const config = {
+        headers: {
+            'auth-token': token,
+        }
+    }
+
+    const body = {
+        id: driverId
+    }
+
+
+    return new Promise((resolve, reject) => {
+        axios.post(`${API_URL}/ride/getrating`, body, config)
+            .then(async (response) => {
+                try {
+                    // console.log(response.data);
+                    // console.log(response);
+                    resolve(response)
+                } catch (e) { reject(e) }
+            }).catch((err) => {
+                console.log(err.response.data);
+                reject(err)
+            })
+    })
+}
+
+async function GetUserData() {
+    const token = await AsyncStorage.getItem("userToken")
+    const config = {
+        headers: {
+            'auth-token': token,
+        }
+    }
+    return new Promise((resolve, reject) => {
+        axios.get(`${API_URL}/ride/getmydata`, config)
+            .then(async (response) => {
+                try {
+                    const userData = await AsyncStorage.getItem("userData");
+                    if (userData) {
+                        console.log("async already exists");
+                    } else {
+                        await AsyncStorage.setItem("userData", JSON.stringify(response.data))
+                    }
+                    // console.log(response.data);
+                    // console.log(response);
+                    resolve(response)
+                } catch (e) { reject(e) }
+            }).catch((err) => {
+                console.log(err.response.data);
+                reject(err)
+            })
+    })
+}
+
+
 function FetchRtoDetails(carno) {
     return new Promise((resolve, reject) => {
         axios.get(
@@ -102,4 +224,4 @@ function FetchRtoDetails(carno) {
     })
 }
 
-export const journeyServices = { FetchLatLong, bookRide, getAllRide, FetchRtoDetails }
+export const journeyServices = { FetchLatLong, bookRide, getAllRide, FetchRtoDetails, AddRating, GetRating, getUserName, GetUserData }
