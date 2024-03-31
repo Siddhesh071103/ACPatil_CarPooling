@@ -125,13 +125,13 @@ export default JoinRideModal = ({ modalVisible, setModalVisible }) => {
                                     <Pressable
                                         onPress={() => { handleNavigation(dat) }}
                                         key={index} style={{ flexDirection: 'row', justifyContent: 'space-between', backgroundColor: 'white', borderColor: colorTheme.borderColor, borderWidth: 1, elevation: 2, borderRadius: 20, padding: 5, marginTop: 10 }}>
-                                        {dat.vehicletype === 'car' && <LottieView
+                                        {dat.vehicletype === 'Car' && <LottieView
                                             source={require('../../assets/json/ecolottie/carani.json')}
                                             autoPlay
                                             loop
                                             style={{ width: 120, height: 120 }}
                                         />}
-                                        {dat.vehicletype === 'bike' && <LottieView
+                                        {dat.vehicletype === 'Bike' && <LottieView
                                             source={require('../../assets/json/ecolottie/bikeani.json')}
                                             autoPlay
                                             loop
